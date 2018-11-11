@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.io.InputStream;
@@ -51,19 +52,20 @@ public class HeroAdapter extends RecyclerView.Adapter<HeroAdapter.HeroViewHolder
         TextView tvHeroName;
         TextView tvHeroImageUrl;
         ImageView ivHeroAvatar;
+        ProgressBar pbLoadHeroImage;
 
         public HeroViewHolder(View itemView) {
             super(itemView);
             tvHeroName = itemView.findViewById(R.id.tv_item_hero_name);
             tvHeroImageUrl = itemView.findViewById(R.id.tv_item_hero_url);
             ivHeroAvatar = itemView.findViewById(R.id.iv_hero_avatar);
+            pbLoadHeroImage = itemView.findViewById(R.id.pb_load_hero_image);
         }
 
         public void bind (Hero hero){
             tvHeroName.setText(hero.getName());
             tvHeroImageUrl.setText(hero.getImageUrl());
             new DownloadImageTask(ivHeroAvatar).execute(hero.getImageUrl());
-
         }
 
         private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
@@ -77,6 +79,7 @@ public class HeroAdapter extends RecyclerView.Adapter<HeroAdapter.HeroViewHolder
             protected void onPreExecute() {
                 super.onPreExecute();
                 bmImage.setVisibility(View.INVISIBLE);
+                pbLoadHeroImage.setVisibility(View.VISIBLE);
             }
 
             protected Bitmap doInBackground(String... urls) {
@@ -94,6 +97,7 @@ public class HeroAdapter extends RecyclerView.Adapter<HeroAdapter.HeroViewHolder
             protected void onPostExecute(Bitmap result) {
                 bmImage.setVisibility(View.VISIBLE);
                 bmImage.setImageBitmap(result);
+                pbLoadHeroImage.setVisibility(View.INVISIBLE);
             }
         }
     }
