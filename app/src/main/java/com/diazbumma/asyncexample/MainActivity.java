@@ -42,11 +42,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadHeroesData() {
-        showFlightDataView();
+        showHeroDataView();
         new FetchHeroesTask().execute();
     }
 
-    private void showFlightDataView() {
+    private void showHeroDataView() {
         tvError.setVisibility(View.INVISIBLE);
         rvHeroes.setVisibility(View.VISIBLE);
     }
